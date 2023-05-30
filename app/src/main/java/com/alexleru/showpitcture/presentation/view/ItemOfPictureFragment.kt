@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentItemOfPictureBinding
 import com.alexleru.showpitcture.fromAssertToDrawable
@@ -70,9 +71,16 @@ class ItemOfPictureFragment : Fragment() {
     }
 
     companion object{
+        // TODO: Именуй как ARG_URL
         private const val URL = "URL"
 
         fun newInstance(url: String): ItemOfPictureFragment {
+            /**
+             * TODO: bundleOf() + apply
+             * fun newInstance(): ItemOfPictureFragment = ItemOfPictureFragment().apply {
+             *     ....
+             * }
+             */
             val args = Bundle()
             args.putString(URL, url)
             val fragment = ItemOfPictureFragment()

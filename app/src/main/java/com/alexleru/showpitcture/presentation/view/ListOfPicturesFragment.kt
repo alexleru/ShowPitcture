@@ -44,6 +44,7 @@ class ListOfPicturesFragment : Fragment() {
     }
 
     private fun recyclerView() {
+        // TODO: apply
         val recycler = binding.recyclerView
         pictureAdapter = PictureAdapter()
         recycler.adapter = pictureAdapter
@@ -51,6 +52,7 @@ class ListOfPicturesFragment : Fragment() {
         recycler.layoutManager = GridLayoutManager(context, columnCount)
     }
 
+    // TODO: getColumnCount / calculateColumnCount
     private fun setColumnCount(): Int {
         val screenOrientation = requireContext().resources.configuration.orientation
         return if (screenOrientation == Configuration.ORIENTATION_PORTRAIT)
