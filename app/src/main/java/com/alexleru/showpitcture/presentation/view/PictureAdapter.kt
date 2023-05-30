@@ -1,11 +1,10 @@
 package com.alexleru.showpitcture.presentation.view
 
-import android.graphics.drawable.Drawable
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.domain.entity.Picture
+import com.alexleru.showpitcture.fromAssertToDrawable
 
 class PictureAdapter : RecyclerView.Adapter<ViewHolderPicture>() {
 
@@ -14,10 +13,11 @@ class PictureAdapter : RecyclerView.Adapter<ViewHolderPicture>() {
     var clickOnPicture: ((String) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderPicture {
+        //TODO: обсудить хорошая ли идея тут создавать view? Довольно сложно в коде стили применять
         val imageView = ImageView(parent.context)
         imageView.layoutParams = ViewGroup.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            200
+            400
         )
         return ViewHolderPicture(imageView)
     }
@@ -26,8 +26,7 @@ class PictureAdapter : RecyclerView.Adapter<ViewHolderPicture>() {
 
     override fun onBindViewHolder(holder: ViewHolderPicture, position: Int) {
         val item = list[position]
-        val png = holder.itemView.context.assets.open(item.url)
-        val dw = Drawable.createFromStream(png, null)
+        val dw = fromAssertToDrawable(holder.itemView.context, item.url)
         with(holder.itemView) {
             (this as ImageView).setImageDrawable(dw)
             setOnClickListener { clickOnPicture?.invoke(item.url) }

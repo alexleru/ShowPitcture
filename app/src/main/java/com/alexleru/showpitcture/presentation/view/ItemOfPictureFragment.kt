@@ -6,8 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentItemOfPictureBinding
+import com.alexleru.showpitcture.fromAssertToDrawable
 
 
 class ItemOfPictureFragment : Fragment() {
@@ -28,25 +30,26 @@ class ItemOfPictureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentItemOfPictureBinding.inflate(inflater, container, false)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupImage()
-        setupOnClick()
+    }
+
+    private fun setupToolbar() {
+        val toolbar = binding.toolbarView
+        (requireActivity() as AppCompatActivity).setSupportActionBar(toolbar)
+        toolbar.title = url
+        toolbar.setNavigationOnClickListener { goBack() }
     }
 
     private fun setupImage() {
-        //повтор как и в адаптере вынести в файл util
-        val png = requireContext().assets.open(url)
-        val dw = Drawable.createFromStream(png, null)
-        //повтор
+        val dw = fromAssertToDrawable(requireContext(), url)
         binding.imageView.setImageDrawable(dw)
-    }
-
-    private fun setupOnClick(){
-        binding.imageView.setOnClickListener { goBack() }
     }
 
     private fun parseArgs(){
