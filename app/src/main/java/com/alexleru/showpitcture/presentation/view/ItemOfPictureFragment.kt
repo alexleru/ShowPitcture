@@ -1,14 +1,14 @@
 package com.alexleru.showpitcture.presentation.view
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import com.alexleru.showpitcture.R
+import androidx.core.os.bundleOf
 import com.alexleru.showpitcture.databinding.FragmentItemOfPictureBinding
+import com.alexleru.showpitcture.domain.entity.Picture
 import com.alexleru.showpitcture.fromAssertToDrawable
 
 
@@ -48,13 +48,13 @@ class ItemOfPictureFragment : Fragment() {
     }
 
     private fun setupImage() {
-        val dw = fromAssertToDrawable(requireContext(), url)
+        val dw = requireContext().fromAssertToDrawable(url)
         binding.imageView.setImageDrawable(dw)
     }
 
     private fun parseArgs(){
-        requireArguments().getString(URL)?.let {
-            url = it
+        requireArguments().getParcelable<Picture>(ARG_PICTURE)?.let {
+            url = it.url
         }
     }
 
@@ -62,22 +62,18 @@ class ItemOfPictureFragment : Fragment() {
         requireActivity().supportFragmentManager.popBackStack()
     }
 
-
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
     companion object{
-        private const val URL = "URL"
+        private const val ARG_PICTURE = "PICTURE"
 
-        fun newInstance(url: String): ItemOfPictureFragment {
-            val args = Bundle()
-            args.putString(URL, url)
-            val fragment = ItemOfPictureFragment()
-            fragment.arguments = args
-            return fragment
+        fun newInstance(picture: Picture) = ItemOfPictureFragment().apply {
+                arguments = Bundle().apply {
+                    putParcelable(ARG_PICTURE, picture)
+                }
         }
     }
 }

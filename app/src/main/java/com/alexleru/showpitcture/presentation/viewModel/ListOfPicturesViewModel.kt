@@ -1,23 +1,21 @@
 package com.alexleru.showpitcture.presentation.viewModel
 
-import android.app.PictureInPictureUiState
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alexleru.showpitcture.data.RepositoryImpl
 import com.alexleru.showpitcture.domain.entity.Picture
-import com.alexleru.showpitcture.domain.usecases.GetListOfPicturesUseCase
+import com.alexleru.showpitcture.domain.usecases.GetListOfItemUseCaseImpl
+import com.alexleru.showpitcture.domain.usecases.SetFavoriteOfPictureImpl
 
 class ListOfPicturesViewModel: ViewModel() {
 
     private val repository = RepositoryImpl()
-    private val getListOfPicturesUseCase = GetListOfPicturesUseCase(repository)
+    private val getListOfPicturesUseCase = GetListOfItemUseCaseImpl(repository)
+    private val setFavoriteOfPicturesUseCase = SetFavoriteOfPictureImpl(repository)
 
-    private var _listOfPicture = MutableLiveData<List<Picture>>()
-    val listOfPicture
-        get() = _listOfPicture
+    val listOfPicture = getListOfPicturesUseCase.invoke()
 
-    init{
-        _listOfPicture.value = getListOfPicturesUseCase.invoke()
+    fun setFavoriteOfPicture(oldValue: Picture){
+        setFavoriteOfPicturesUseCase.invoke(oldValue)
     }
 
 }

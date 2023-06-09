@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentListOfPicturesBinding
+import com.alexleru.showpitcture.domain.entity.Picture
+import com.alexleru.showpitcture.domain.entity.TextTitle
 import com.alexleru.showpitcture.presentation.viewModel.ListOfPicturesViewModel
 
 class ListOfPicturesFragment : Fragment() {
@@ -21,7 +23,6 @@ class ListOfPicturesFragment : Fragment() {
     private val viewModelList by lazy {
         ViewModelProvider(this)[ListOfPicturesViewModel::class.java]
     }
-
     private lateinit var pictureAdapter: PictureAdapter
 
     override fun onCreateView(
@@ -36,41 +37,62 @@ class ListOfPicturesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView()
         viewModelList.listOfPicture.observe(viewLifecycleOwner) {
-            pictureAdapter.list = it
-        }
-        pictureAdapter.clickOnPicture = {
-            openItemFragment(it)
+            pictureAdapter.submitList(it)
         }
     }
 
     private fun recyclerView() {
-        val recycler = binding.recyclerView
-        pictureAdapter = PictureAdapter()
-        recycler.adapter = pictureAdapter
-        val columnCount = setColumnCount()
-        recycler.layoutManager = GridLayoutManager(context, columnCount)
+        pictureAdapter = PictureAdapter ({clickOnItem(it)}, {clickLongOnItem(it)})
+        binding.recyclerView.apply {
+            adapter = pictureAdapter
+            val columnCount = calculateColumnCount()
+            PictureAdapter.PICTURE_VIEW_TYPE
+            val gridLayoutManager = GridLayoutManager(context, columnCount)
+            gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    return when(pictureAdapter.currentList[position]){
+                        is Picture -> SPAIN_SIZE_ONE
+                        is TextTitle -> columnCount
+                    }
+
+                }
+            }
+            layoutManager = gridLayoutManager
+
+        }
+
     }
 
-    private fun setColumnCount(): Int {
+    private fun calculateColumnCount(): Int {
         val screenOrientation = requireContext().resources.configuration.orientation
         return if (screenOrientation == Configuration.ORIENTATION_PORTRAIT)
-            2
+            COLUMN_SIZE_PORTRAIT
         else
-            3
+            COLUMN_SIZE_LANDSCAPE
     }
 
-    private fun openItemFragment(url: String) {
+    private fun clickOnItem(picture: Picture) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(
-                R.id.mainActivity, ItemOfPictureFragment.newInstance(url)
+                R.id.mainActivity, ItemOfPictureFragment.newInstance(picture)
             )
             .addToBackStack(null)
             .commit()
     }
 
+    private fun clickLongOnItem(picture: Picture){
+        viewModelList.setFavoriteOfPicture(picture)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    companion object{
+        private const val SPAIN_SIZE_ONE = 1
+        private const val COLUMN_SIZE_PORTRAIT = 2
+        private const val COLUMN_SIZE_LANDSCAPE = 3
     }
 
 }
