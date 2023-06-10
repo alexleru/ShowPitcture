@@ -8,7 +8,7 @@ import com.alexleru.showpitcture.domain.entity.TextTitle
 interface Repository {
     fun getListOfItem(): LiveData<List<ItemData>>
 
-    fun setFavoriteOfPicture(oldValue: Picture)
+    fun setFavoriteOfPicture(picture: Picture)
 
     fun updateList()
 
