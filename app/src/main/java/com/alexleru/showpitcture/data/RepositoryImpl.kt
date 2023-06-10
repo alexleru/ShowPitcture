@@ -7,7 +7,6 @@ import com.alexleru.showpitcture.domain.entity.ItemData
 import com.alexleru.showpitcture.domain.entity.Picture
 import com.alexleru.showpitcture.domain.entity.TextTitle
 import com.alexleru.showpitcture.getDate
-import java.util.UUID
 
 class RepositoryImpl : Repository {
 
@@ -196,13 +195,14 @@ class RepositoryImpl : Repository {
         return pictureLiveItemList
     }
 
-    private fun getPictureById(uuid: UUID): Picture {
-        return pictures.find { it.uuid == uuid }
-            ?: throw RuntimeException("Element by ID $uuid not found")
-    }
+//    private fun getPictureById(uuid: UUID): Picture {
+//        return pictures.find { it.uuid == uuid }
+//            ?: throw RuntimeException("Element by ID $uuid not found")
+//    }
 
+    //Todo: Ожидаю, что адаптер мне вернет обновленное значение, после лонгклика
     override fun setFavoriteOfPicture(picture: Picture) {
-        val oldValue = getPictureById(picture.uuid)
+        val oldValue = picture//getPictureById(picture.uuid)
         val newValue = oldValue.copy(favorite = !oldValue.favorite)
         pictures.remove(oldValue)
         pictures.add(newValue)

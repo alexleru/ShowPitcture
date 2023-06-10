@@ -11,16 +11,14 @@ class ViewHolderPicture(
     private val clickLongOnItem: (Picture) -> Unit
 ) : ViewHolder(binding.root) {
 
-    fun bind(
-        picture: Picture
-    ) {
+    fun bind(picture: Picture) {
         setupMainImage(picture)
         setupFavoriteImage(picture.favorite)
         setupTextViewDate(picture)
     }
 
-    fun bindPayload(isFavorite: Boolean){
-        setupFavoriteImage(isFavorite)
+    fun bindPayload(picture: Picture) {
+        setupFavoriteImage(picture.favorite)
     }
 
 
@@ -28,9 +26,7 @@ class ViewHolderPicture(
         binding.textViewDate.text = picture.date.toString()
     }
 
-    private fun setupMainImage(
-        picture: Picture
-    ) {
+    private fun setupMainImage(picture: Picture) {
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
         with(binding.imageView) {
             setImageDrawable(drawable)

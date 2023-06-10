@@ -55,7 +55,7 @@ class PictureAdapter(
             super.onBindViewHolder(holder, position, payloads)
         } else {
             if (payloads[0] == true && holder is ViewHolderPicture) {
-                holder.bindPayload((item as Picture).favorite)
+                holder.bindPayload((item as Picture))
             }
         }
     }
