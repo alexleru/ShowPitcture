@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CompoundView">
+        <attr name="backgroundTextCompound" format="color"/>
+        <attr name="textColorCompound" format="color"/>
+        <attr name="sizeRelativeToWidthCompound" format="integer"/>
+        <attr name="textCompound" format="string"/>
+        <attr name="imageCompound" format="reference|color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressView">
+        <attr name="colorProgress" format="color"/>
+    </declare-styleable>
+</resources>

@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentListOfPicturesBinding
 import com.alexleru.showpitcture.domain.entity.Picture
@@ -42,7 +43,7 @@ class ListOfPicturesFragment : Fragment() {
     }
 
     private fun recyclerView() {
-        pictureAdapter = PictureAdapter ({clickOnItem(it)}, {clickLongOnItem(it)})
+        pictureAdapter = PictureAdapter({ clickOnItem(it) }, { clickLongOnItem(it) })
         binding.recyclerView.apply {
             adapter = pictureAdapter
             val columnCount = calculateColumnCount()
@@ -50,15 +51,26 @@ class ListOfPicturesFragment : Fragment() {
             val gridLayoutManager = GridLayoutManager(context, columnCount)
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
-                    return when(pictureAdapter.currentList[position]){
+                    return when (pictureAdapter.currentList[position]) {
                         is Picture -> SPAIN_SIZE_ONE
                         is TextTitle -> columnCount
                     }
-
                 }
+
             }
             layoutManager = gridLayoutManager
 
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val lastPosition =
+                        (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+                    binding.customProgressBar.position(
+                        lastPosition,
+                        (adapter as PictureAdapter).itemCount
+                    )
+                }
+            })
         }
 
     }
@@ -80,7 +92,7 @@ class ListOfPicturesFragment : Fragment() {
             .commit()
     }
 
-    private fun clickLongOnItem(picture: Picture){
+    private fun clickLongOnItem(picture: Picture) {
         viewModelList.setFavoriteOfPicture(picture)
     }
 
@@ -89,7 +101,7 @@ class ListOfPicturesFragment : Fragment() {
         _binding = null
     }
 
-    companion object{
+    companion object {
         private const val SPAIN_SIZE_ONE = 1
         private const val COLUMN_SIZE_PORTRAIT = 2
         private const val COLUMN_SIZE_LANDSCAPE = 3

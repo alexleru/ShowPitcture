@@ -14,8 +14,8 @@ class ListOfPicturesViewModel: ViewModel() {
 
     val listOfPicture = getListOfPicturesUseCase.invoke()
 
-    fun setFavoriteOfPicture(oldValue: Picture){
-        setFavoriteOfPicturesUseCase.invoke(oldValue)
+    fun setFavoriteOfPicture(picture: Picture){
+        setFavoriteOfPicturesUseCase.invoke(picture)
     }
 
 }
