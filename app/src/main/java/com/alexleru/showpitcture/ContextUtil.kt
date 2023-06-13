@@ -8,3 +8,5 @@ fun Context.fromAssertToDrawable(url: String): Drawable {
     return Drawable.createFromStream(png, null)
         ?: throw RuntimeException("fromAssertToDrawable() == null")
 }
+
+

@@ -16,23 +16,17 @@ class ViewHolderPicture(
     ) {
         setupMainImage(picture)
         setupFavoriteImage(picture.favorite)
-        setupTextViewDate(picture)
     }
 
-    fun bindPayload(isFavorite: Boolean){
+    fun bindPayload(isFavorite: Boolean) {
         setupFavoriteImage(isFavorite)
-    }
-
-
-    private fun setupTextViewDate(picture: Picture) {
-        binding.textViewDate.text = picture.date.toString()
     }
 
     private fun setupMainImage(
         picture: Picture
     ) {
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
-        with(binding.imageView) {
+        with(binding.imageViewMain) {
             setImageDrawable(drawable)
             setOnClickListener { clickOnItem.invoke(picture) }
             setOnLongClickListener {
