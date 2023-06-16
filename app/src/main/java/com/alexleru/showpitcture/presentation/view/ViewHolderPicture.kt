@@ -27,7 +27,8 @@ class ViewHolderPicture(
     ) {
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
         with(binding.imageViewMain) {
-            setImageDrawable(drawable)
+            textDate = picture.date.toString()
+            setImageCompound(drawable)
             setOnClickListener { clickOnItem.invoke(picture) }
             setOnLongClickListener {
                 clickLongOnItem.invoke(picture)

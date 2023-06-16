@@ -59,6 +59,8 @@ class ProgressView @JvmOverloads constructor(
         Log.d("animationProgress+++", progressValue.toString())
     }
 
+    // TODO: я бы назвал setProgress или что-нибудь подобное
+    // к тому же, лучше избавиться от логики здесь. Сюда лучше сразу проценты)
     fun position(newPosition: Int, count: Int) {
         val newState = (newPosition + 1) * 100 / count
         animationProgress(newState)

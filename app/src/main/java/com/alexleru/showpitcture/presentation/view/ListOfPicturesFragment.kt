@@ -37,6 +37,7 @@ class ListOfPicturesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView()
+        // TODO: Сделать метод observeViewModel и в нем описывать подписки
         viewModelList.listOfPicture.observe(viewLifecycleOwner) {
             pictureAdapter.submitList(it)
         }
@@ -47,7 +48,6 @@ class ListOfPicturesFragment : Fragment() {
         binding.recyclerView.apply {
             adapter = pictureAdapter
             val columnCount = calculateColumnCount()
-            PictureAdapter.PICTURE_VIEW_TYPE
             val gridLayoutManager = GridLayoutManager(context, columnCount)
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
@@ -73,6 +73,10 @@ class ListOfPicturesFragment : Fragment() {
             })
         }
 
+    }
+
+    private fun calculateProgress(newPosition: Int) {
+        // TODO: Use for calculation progress
     }
 
     private fun calculateColumnCount(): Int {
