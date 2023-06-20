@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Widget.DefaultStyle.CompoundView" parent="android:Widget">
+        <item name="backgroundTextCompound">@color/md_theme_primaryContainer</item>
+        <item name="textColorCompound">@color/md_theme_primary</item>
+        <item name="sizeRelativeToWidthCompound">50</item>
+    </style>
+
+    <style name="Widget.DefaultStyle.ProgressView" parent="android:Widget">
+        <item name="colorProgress">@color/md_theme_primary</item>
+    </style>
+</resources>

@@ -1,4 +1,4 @@
-package com.alexleru.showpitcture.presentation.view.cumstomeView
+package com.alexleru.showpitcture.presentation.view.customView
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -13,6 +13,7 @@ import androidx.core.content.withStyledAttributes
 import com.alexleru.showpitcture.R
 
 private const val ANIMATION_DURATION = 1000L
+private val DEFAULT_STYLE_ATTR = R.attr.viewStyleCustomProgressBarViewDefault
 
 class ProgressView @JvmOverloads constructor(
     context: Context,
@@ -38,7 +39,7 @@ class ProgressView @JvmOverloads constructor(
         getContext().withStyledAttributes(
             attrs,
             R.styleable.ProgressView,
-            defStyleAttr,
+            DEFAULT_STYLE_ATTR,
             defStyleRes
         ) {
             getColor(R.styleable.ProgressView_colorProgress, Color.BLACK).run {
@@ -59,12 +60,7 @@ class ProgressView @JvmOverloads constructor(
         Log.d("animationProgress+++", progressValue.toString())
     }
 
-    fun position(newPosition: Int, count: Int) {
-        val newState = (newPosition + 1) * 100 / count
-        animationProgress(newState)
-    }
-
-    private fun animationProgress(current: Int) {
+    fun animationProgress(current: Int) {
         ValueAnimator.ofFloat(progressValue.toFloat(), current.toFloat()).apply {
             interpolator = DecelerateInterpolator()
             duration = ANIMATION_DURATION

@@ -37,8 +37,15 @@ class ListOfPicturesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
         viewModelList.listOfPicture.observe(viewLifecycleOwner) {
             pictureAdapter.submitList(it)
+        }
+        viewModelList.progressPosition.observe(viewLifecycleOwner) {
+            binding.customProgressBar.animationProgress(it)
         }
     }
 
@@ -56,7 +63,6 @@ class ListOfPicturesFragment : Fragment() {
                         is TextTitle -> columnCount
                     }
                 }
-
             }
             layoutManager = gridLayoutManager
 
@@ -65,14 +71,13 @@ class ListOfPicturesFragment : Fragment() {
                     super.onScrolled(recyclerView, dx, dy)
                     val lastPosition =
                         (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
-                    binding.customProgressBar.position(
+                    viewModelList.position(
                         lastPosition,
                         (adapter as PictureAdapter).itemCount
                     )
                 }
             })
         }
-
     }
 
     private fun calculateColumnCount(): Int {

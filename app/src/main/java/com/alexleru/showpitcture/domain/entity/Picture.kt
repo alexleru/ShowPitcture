@@ -13,8 +13,7 @@ data class Picture(
     val favorite: Boolean = false
 ) : ItemData(uuid), Parcelable, Comparable<Picture> {
     override fun compareTo(other: Picture): Int {
-        val compareDate = this.date.compareTo(other.date) * (-1)
-        return when (compareDate) {
+        return when (val compareDate = this.date.compareTo(other.date) * (-1)) {
             0 -> this.uuid.compareTo(other.uuid)
             else -> return compareDate
         }

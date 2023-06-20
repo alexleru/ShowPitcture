@@ -11,7 +11,6 @@ import com.alexleru.showpitcture.domain.entity.Picture
 import com.alexleru.showpitcture.formatDate
 import com.alexleru.showpitcture.fromAssertToDrawable
 
-
 class ItemOfPictureFragment : Fragment() {
 
     private var _binding: FragmentItemOfPictureBinding? = null

@@ -11,9 +11,8 @@ import java.util.UUID
 
 class RepositoryImpl : Repository {
 
-    private val pictureLiveItemList = MutableLiveData<List<ItemData>>()
+    private val pictureLiveItemList = MutableLiveData<List<ItemData>>(emptyList())
     private val pictures = sortedSetOf<Picture>()
-
 
     private val listTextTitle = mutableListOf<TextTitle>()
 
@@ -132,7 +131,6 @@ class RepositoryImpl : Repository {
 
     //endregion
 
-
     override fun updateList() {
         createTextTitleList()
         pictureLiveItemList.value = insertTextTitleInList()
@@ -190,7 +188,6 @@ class RepositoryImpl : Repository {
             nextPosition
         }
     }
-
 
     override fun getListOfItem(): LiveData<List<ItemData>> {
         return pictureLiveItemList

@@ -3,6 +3,7 @@ package com.alexleru.showpitcture.presentation.view
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
 import com.alexleru.showpitcture.domain.entity.Picture
+import com.alexleru.showpitcture.formatDate
 import com.alexleru.showpitcture.fromAssertToDrawable
 
 class ViewHolderPicture(
@@ -27,7 +28,8 @@ class ViewHolderPicture(
     ) {
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
         with(binding.imageViewMain) {
-            setImageDrawable(drawable)
+            setImageCompound(drawable)
+            textDate = picture.date.formatDate()
             setOnClickListener { clickOnItem.invoke(picture) }
             setOnLongClickListener {
                 clickLongOnItem.invoke(picture)

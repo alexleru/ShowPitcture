@@ -7,7 +7,7 @@ import com.alexleru.showpitcture.domain.entity.TextTitle
 class ViewHolderText(private val binding: ItemTextLayoutBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(item: TextTitle){
-            binding.textView.text = item.text
-        }
+    fun bind(item: TextTitle) {
+        binding.textView.text = item.text
+    }
 }

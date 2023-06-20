@@ -1,4 +1,4 @@
-package com.alexleru.showpitcture.presentation.view.cumstomeView
+package com.alexleru.showpitcture.presentation.view.customView
 
 import android.content.Context
 import android.graphics.Color
@@ -8,17 +8,16 @@ import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
 import android.view.View
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.withStyledAttributes
 import com.alexleru.showpitcture.R
+import com.alexleru.showpitcture.databinding.ImageCompoundViewBinding
 
 
 private const val MINIMAL_TEXT_WIDTH_PERCENT_OF_IMAGE_VIEW = 30
+private val DEFAULT_STYLE_ATTR = R.attr.viewStyleCompoundViewDefault
 
 class CompoundView @JvmOverloads constructor(
     context: Context,
@@ -29,18 +28,12 @@ class CompoundView @JvmOverloads constructor(
     context, attrs, defStyleAttr, defStyleRes
 ) {
 
-    private val imageViewCompound by lazy(LazyThreadSafetyMode.NONE) {
-        findViewById<ImageView>(R.id.imageViewCompound)
-    }
-
-    private val textViewCompound by lazy(LazyThreadSafetyMode.NONE) {
-        findViewById<TextView>(R.id.textViewCompound)
-    }
+    private val bind: ImageCompoundViewBinding by lazy { ImageCompoundViewBinding.bind(this) }
 
     var textDate
-        get() = textViewCompound.text.toString()
+        get() = bind.textViewCompound.text.toString()
         set(value) {
-            textViewCompound.text = value
+            bind.textViewCompound.text = value
         }
 
     ///Принимает значения от 0 до 100. Увеличивает ширину и шрифт TextView.
@@ -53,7 +46,7 @@ class CompoundView @JvmOverloads constructor(
         getContext().withStyledAttributes(
             attrs,
             R.styleable.CompoundView,
-            defStyleAttr,
+            DEFAULT_STYLE_ATTR,
             defStyleRes
         ) {
             textDate = getString(R.styleable.CompoundView_textCompound).orEmpty()
@@ -63,16 +56,15 @@ class CompoundView @JvmOverloads constructor(
                     MINIMAL_TEXT_WIDTH_PERCENT_OF_IMAGE_VIEW
                 )
             getColor(R.styleable.CompoundView_backgroundTextCompound, Color.BLACK).run {
-                textViewCompound.setBackgroundColor(this)
-                //Todo: странно, но вот так не заработало textViewCompound::setBackgroundColor
+                bind.textViewCompound.setBackgroundColor(this)
             }
 
             getColor(R.styleable.CompoundView_textColorCompound, Color.BLACK).run {
-                textViewCompound.setTextColor(this)
+                bind.textViewCompound.setTextColor(this)
             }
 
             getDrawable(R.styleable.CompoundView_imageCompound).run {
-                imageViewCompound::setImageDrawable
+                bind.imageViewCompound::setImageDrawable
             }
         }
     }
@@ -83,14 +75,14 @@ class CompoundView @JvmOverloads constructor(
     }
 
     private fun calculateSizeTextView() {
-        Log.d("imageViewCompound+++", imageViewCompound.width.toString())
-        Log.d("textViewCompound_OLD_WIDTH+++", textViewCompound.width.toString())
+        Log.d("imageViewCompound+++", bind.imageViewCompound.width.toString())
+        Log.d("textViewCompound_OLD_WIDTH+++", bind.textViewCompound.width.toString())
         Log.d("sizeRelativeToWidthCompound+++", sizeRelativeToWidthCompound.toString())
-        val widthOfImageView = imageViewCompound.width
+        val widthOfImageView = bind.imageViewCompound.width
         //TODO при использовании в recycleview не присваиваются какие либо значения.
         // В данном случае textViewCompound.width после присваивания, все равно оставляет прежнее значение
         // При этом при использовании в следующем фрагменте все норм.
-        textViewCompound.width =
+        bind.textViewCompound.layoutParams.width =
             if (sizeRelativeToWidthCompound < MINIMAL_TEXT_WIDTH_PERCENT_OF_IMAGE_VIEW
                 || sizeRelativeToWidthCompound > 100
             ) {
@@ -102,26 +94,29 @@ class CompoundView @JvmOverloads constructor(
                 )
                 widthOfImageView * sizeRelativeToWidthCompound / 100
             }
-        Log.d("imageViewCompoundF+++", imageViewCompound.width.toString())
-        Log.d("textViewCompound_NEW_WIDTH+++", textViewCompound.width.toString())
+        Log.d("imageViewCompoundF+++", bind.imageViewCompound.width.toString())
+        Log.d("textViewCompound_NEW_WIDTH+++", bind.textViewCompound.width.toString())
 
-        val size =
-            getFitTextSize(textViewCompound.paint, textViewCompound.width.toFloat(), textDate)
-        textViewCompound.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
-        Log.d("getFitTextSize++++", textViewCompound.textSize.toString())
+        val size = getFitTextSize(
+            bind.textViewCompound.paint,
+            bind.textViewCompound.width.toFloat(),
+            textDate
+        )
+        bind.textViewCompound.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
+        Log.d("getFitTextSize++++", bind.textViewCompound.textSize.toString())
     }
 
 
     fun setImageCompound(image: Drawable) {
-        imageViewCompound.setImageDrawable(image)
+        bind.imageViewCompound.setImageDrawable(image)
     }
 
     fun setTextBackgroundColor(@ColorRes color: Int) {
-        textViewCompound.setBackgroundResource(color)
+        bind.textViewCompound.setBackgroundResource(color)
     }
 
     fun setTextColor(@ColorRes color: Int) {
-        textViewCompound.setTextColor(ContextCompat.getColor(context, color))
+        bind.textViewCompound.setTextColor(ContextCompat.getColor(context, color))
     }
 
     private fun getFitTextSize(paint: TextPaint, width: Float, text: String?): Float {

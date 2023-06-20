@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         app:navigationIcon="?attr/actionModeCloseDrawable" />
 
-    <com.alexleru.showpitcture.presentation.view.cumstomeView.CompoundView
+    <com.alexleru.showpitcture.presentation.view.customView.CompoundView
         android:id="@+id/imageViewMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
