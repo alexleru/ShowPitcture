@@ -1,5 +1,6 @@
 package com.alexleru.showpitcture.presentation.view
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
 import com.alexleru.showpitcture.domain.entity.Picture
@@ -19,8 +20,8 @@ class ViewHolderPicture(
 
     fun bindPayload(picture: Picture) {
         setupFavoriteImage(picture.favorite)
+        bindListeners(picture)
     }
-
 
     private fun setupTextViewDate(picture: Picture) {
         binding.textViewDate.text = picture.date.toString()
@@ -30,7 +31,15 @@ class ViewHolderPicture(
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
         with(binding.imageView) {
             setImageDrawable(drawable)
-            setOnClickListener { clickOnItem.invoke(picture) }
+        }
+        bindListeners(picture)
+    }
+
+    private fun bindListeners(picture: Picture) {
+        with(binding.imageView) {
+            setOnClickListener {
+                clickOnItem.invoke(picture)
+            }
             setOnLongClickListener {
                 clickLongOnItem.invoke(picture)
                 true
