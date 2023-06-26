@@ -2,34 +2,42 @@ package com.alexleru.showpitcture.presentation.view
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
-import com.alexleru.showpitcture.domain.entity.Picture
 import com.alexleru.showpitcture.formatDate
 import com.alexleru.showpitcture.fromAssertToDrawable
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.*
 
 class ViewHolderPicture(
     private val binding: ItemPictureLayoutBinding,
-    private val clickOnItem: (Picture) -> Unit,
-    private val clickLongOnItem: (Picture) -> Unit
+    private val clickOnItem: (PictureViewModel) -> Unit,
+    private val clickLongOnItem: (PictureViewModel) -> Unit
 ) : ViewHolder(binding.root) {
 
     fun bind(
-        picture: Picture
+        picture: PictureViewModel
     ) {
         setupMainImage(picture)
         setupFavoriteImage(picture.favorite)
+        setupListener(picture)
     }
 
-    fun bindPayload(isFavorite: Boolean) {
-        setupFavoriteImage(isFavorite)
+    fun bindPayload(picture: PictureViewModel) {
+        setupFavoriteImage(picture.favorite)
+        setupListener(picture)
     }
 
     private fun setupMainImage(
-        picture: Picture
+        picture: PictureViewModel
     ) {
         val drawable = binding.root.context.fromAssertToDrawable(picture.url)
         with(binding.imageViewMain) {
             setImageCompound(drawable)
             textDate = picture.date.formatDate()
+        }
+    }
+
+
+    private fun setupListener(picture: PictureViewModel) {
+        with(binding.imageViewMain) {
             setOnClickListener { clickOnItem.invoke(picture) }
             setOnLongClickListener {
                 clickLongOnItem.invoke(picture)

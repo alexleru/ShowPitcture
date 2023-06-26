@@ -4,16 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.alexleru.showpitcture.domain.Repository
 import com.alexleru.showpitcture.domain.entity.ItemData
-import com.alexleru.showpitcture.domain.entity.Picture
-import com.alexleru.showpitcture.domain.entity.TextTitle
+import com.alexleru.showpitcture.domain.entity.ItemData.Picture
+import com.alexleru.showpitcture.domain.entity.ItemData.TextTitle
 import com.alexleru.showpitcture.getDate
-import java.util.UUID
 
 class RepositoryImpl : Repository {
 
     private val pictureLiveItemList = MutableLiveData<List<ItemData>>(emptyList())
     private val pictures = sortedSetOf<Picture>()
-
     private val listTextTitle = mutableListOf<TextTitle>()
 
     //region init mock data for pictures
@@ -128,7 +126,6 @@ class RepositoryImpl : Repository {
         )
         updateList()
     }
-
     //endregion
 
     override fun updateList() {
@@ -137,10 +134,10 @@ class RepositoryImpl : Repository {
     }
 
     private fun insertTextTitleInList(): List<ItemData> {
-        val itemDatas = pictures.map { it as ItemData }.toMutableList()
+        val itemDataList = pictures.map { it as ItemData }.toMutableList()
         for (i in listTextTitle)
-            itemDatas.add(i.position, i)
-        return itemDatas
+            itemDataList.add(i.position, i)
+        return itemDataList
     }
 
     private fun createTextTitleList() {
@@ -149,21 +146,21 @@ class RepositoryImpl : Repository {
             when (i) {
                 0 -> {
                     val countToday = pictures.count { it.date.isEqual(getDate()) }
-                    nextPosition = addTitleText("Today", countToday, nextPosition)
+                    nextPosition = addTitleText(TODAY, countToday, nextPosition)
                 }
 
                 1 -> {
                     val countYesterday = pictures.count {
                         it.date.isEqual(getDate(1))
                     }
-                    nextPosition = addTitleText("Yesterday", countYesterday, nextPosition)
+                    nextPosition = addTitleText(YESTERDAY, countYesterday, nextPosition)
                 }
 
                 else -> {
                     val countOldest = pictures.count {
                         it.date.isBefore(getDate(1))
                     }
-                    nextPosition = addTitleText("Oldest", countOldest, nextPosition)
+                    nextPosition = addTitleText(OLDEST, countOldest, nextPosition)
                 }
             }
         }
@@ -193,16 +190,16 @@ class RepositoryImpl : Repository {
         return pictureLiveItemList
     }
 
-    private fun getPictureById(uuid: UUID): Picture {
-        return pictures.find { it.uuid == uuid }
-            ?: throw RuntimeException("Element by ID $uuid not found")
-    }
-
     override fun setFavoriteOfPicture(picture: Picture) {
-        val oldValue = getPictureById(picture.uuid)
-        val newValue = oldValue.copy(favorite = !oldValue.favorite)
-        pictures.remove(oldValue)
+        val newValue = picture.copy(favorite = !picture.favorite)
+        pictures.remove(picture)
         pictures.add(newValue)
         updateList()
+    }
+
+    companion object {
+        private const val TODAY = "Today"
+        private const val YESTERDAY = "Yesterday"
+        private const val OLDEST = "Oldest"
     }
 }

@@ -1,5 +1,6 @@
 package com.alexleru.showpitcture.presentation.view
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,9 +8,9 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.alexleru.showpitcture.databinding.FragmentItemOfPictureBinding
-import com.alexleru.showpitcture.domain.entity.Picture
 import com.alexleru.showpitcture.formatDate
 import com.alexleru.showpitcture.fromAssertToDrawable
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
 
 class ItemOfPictureFragment : Fragment() {
 
@@ -17,7 +18,7 @@ class ItemOfPictureFragment : Fragment() {
     private val binding
         get() = _binding ?: throw RuntimeException("FragmentItemOfPictureBinding == null")
 
-    private lateinit var picture: Picture
+    private lateinit var picture: PictureViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +30,6 @@ class ItemOfPictureFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentItemOfPictureBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -53,8 +53,15 @@ class ItemOfPictureFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        requireArguments().getParcelable<Picture>(ARG_PICTURE)?.let {
-            picture = it
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            requireArguments().getParcelable(ARG_PICTURE, PictureViewModel::class.java)?.let {
+                picture = it
+            }
+        } else {
+            @Suppress("DEPRECATION")
+            requireArguments().getParcelable<PictureViewModel>(ARG_PICTURE)?.let {
+                picture = it
+            }
         }
     }
 
@@ -70,7 +77,7 @@ class ItemOfPictureFragment : Fragment() {
     companion object {
         private const val ARG_PICTURE = "PICTURE"
 
-        fun newInstance(picture: Picture) = ItemOfPictureFragment().apply {
+        fun newInstance(picture: PictureViewModel) = ItemOfPictureFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_PICTURE, picture)
             }

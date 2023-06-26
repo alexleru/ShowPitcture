@@ -1,19 +1,19 @@
-package com.alexleru.showpitcture.domain.entity
+package com.alexleru.showpitcture.presentation.view.entity
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import org.joda.time.LocalDate
 import java.util.UUID
 
-sealed class ItemData(open val uuid: UUID){
+sealed class ItemDataViewModel(open val uuid: UUID){
     @Parcelize
-    data class Picture(
+    data class PictureViewModel(
         override val uuid: UUID = UUID.randomUUID(),
         val url: String,
         val date: LocalDate,
         val favorite: Boolean = false
-    ) : ItemData(uuid), Parcelable, Comparable<Picture> {
-        override fun compareTo(other: Picture): Int {
+    ) : ItemDataViewModel(uuid), Parcelable, Comparable<PictureViewModel> {
+        override fun compareTo(other: PictureViewModel): Int {
             return when (val compareDate = this.date.compareTo(other.date) * (-1)) {
                 0 -> this.uuid.compareTo(other.uuid)
                 else -> return compareDate
@@ -21,10 +21,10 @@ sealed class ItemData(open val uuid: UUID){
         }
     }
 
-    data class TextTitle
+    data class TextTitleViewModel
         (
         override val uuid: UUID = UUID.randomUUID(),
         val text: String,
         val position: Int
-    ): ItemData(uuid)
+    ): ItemDataViewModel(uuid)
 }

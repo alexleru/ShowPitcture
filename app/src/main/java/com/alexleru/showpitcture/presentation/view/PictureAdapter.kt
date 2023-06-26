@@ -7,15 +7,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
 import com.alexleru.showpitcture.databinding.ItemTextLayoutBinding
-import com.alexleru.showpitcture.domain.entity.ItemData
-import com.alexleru.showpitcture.domain.entity.Picture
-import com.alexleru.showpitcture.domain.entity.TextTitle
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.TextTitleViewModel
+
 
 class PictureAdapter(
-    private val clickOnItem: ((Picture) -> Unit),
-    private val clickLongOnItem: ((Picture) -> Unit)
+    private val clickOnItem: ((PictureViewModel) -> Unit),
+    private val clickLongOnItem: ((PictureViewModel) -> Unit)
 ) :
-    ListAdapter<ItemData, RecyclerView.ViewHolder>(PictureDiffCallback()) {
+    ListAdapter<ItemDataViewModel, RecyclerView.ViewHolder>(PictureDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -40,8 +41,8 @@ class PictureAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (holder) {
-            is ViewHolderPicture -> holder.bind(item as Picture)
-            is ViewHolderText -> holder.bind(item as TextTitle)
+            is ViewHolderPicture -> holder.bind(item as PictureViewModel)
+            is ViewHolderText -> holder.bind(item as TextTitleViewModel)
         }
     }
 
@@ -55,15 +56,15 @@ class PictureAdapter(
             super.onBindViewHolder(holder, position, payloads)
         } else {
             if (payloads[0] == true && holder is ViewHolderPicture) {
-                holder.bindPayload((item as Picture).favorite)
+                holder.bindPayload((item as PictureViewModel))
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is TextTitle -> TEXT_VIEW_TYPE
-            is Picture -> PICTURE_VIEW_TYPE
+            is TextTitleViewModel -> TEXT_VIEW_TYPE
+            is PictureViewModel -> PICTURE_VIEW_TYPE
         }
     }
 

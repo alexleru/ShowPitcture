@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentListOfPicturesBinding
-import com.alexleru.showpitcture.domain.entity.Picture
-import com.alexleru.showpitcture.domain.entity.TextTitle
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
+import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.TextTitleViewModel
 import com.alexleru.showpitcture.presentation.viewModel.ListOfPicturesViewModel
 
 class ListOfPicturesFragment : Fragment() {
@@ -41,7 +41,7 @@ class ListOfPicturesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModelList.listOfPicture.observe(viewLifecycleOwner) {
+        viewModelList.getListOfItems().observe(viewLifecycleOwner) {
             pictureAdapter.submitList(it)
         }
         viewModelList.progressPosition.observe(viewLifecycleOwner) {
@@ -59,8 +59,8 @@ class ListOfPicturesFragment : Fragment() {
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (pictureAdapter.currentList[position]) {
-                        is Picture -> SPAIN_SIZE_ONE
-                        is TextTitle -> columnCount
+                        is PictureViewModel -> SPAIN_SIZE_ONE
+                        is TextTitleViewModel -> columnCount
                     }
                 }
             }
@@ -88,7 +88,7 @@ class ListOfPicturesFragment : Fragment() {
             COLUMN_SIZE_LANDSCAPE
     }
 
-    private fun clickOnItem(picture: Picture) {
+    private fun clickOnItem(picture: PictureViewModel) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(
                 R.id.mainActivity, ItemOfPictureFragment.newInstance(picture)
@@ -97,7 +97,7 @@ class ListOfPicturesFragment : Fragment() {
             .commit()
     }
 
-    private fun clickLongOnItem(picture: Picture) {
+    private fun clickLongOnItem(picture: PictureViewModel) {
         viewModelList.setFavoriteOfPicture(picture)
     }
 

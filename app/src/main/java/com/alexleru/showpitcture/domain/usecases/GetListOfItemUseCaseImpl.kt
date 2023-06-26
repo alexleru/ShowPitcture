@@ -3,7 +3,6 @@ package com.alexleru.showpitcture.domain.usecases
 import androidx.lifecycle.LiveData
 import com.alexleru.showpitcture.domain.Repository
 import com.alexleru.showpitcture.domain.entity.ItemData
-import com.alexleru.showpitcture.domain.entity.Picture
 
 class GetListOfItemUseCaseImpl(private val repository: Repository): GetListOfItemUseCase {
     override operator fun invoke(): LiveData<List<ItemData>> {
