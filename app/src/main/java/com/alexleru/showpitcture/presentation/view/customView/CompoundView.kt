@@ -111,6 +111,8 @@ class CompoundView @JvmOverloads constructor(
         bind.imageViewCompound.setImageDrawable(image)
     }
 
+    fun getImageCompound() = bind.imageViewCompound
+
     fun setTextBackgroundColor(@ColorRes color: Int) {
         bind.textViewCompound.setBackgroundResource(color)
     }

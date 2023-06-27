@@ -1,42 +1,46 @@
 package com.alexleru.showpitcture.presentation.view
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
-import com.alexleru.showpitcture.formatDate
-import com.alexleru.showpitcture.fromAssertToDrawable
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.*
+import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
+import com.bumptech.glide.Glide
 
 class ViewHolderPicture(
     private val binding: ItemPictureLayoutBinding,
-    private val clickOnItem: (PictureViewModel) -> Unit,
-    private val clickLongOnItem: (PictureViewModel) -> Unit
+    private val clickOnItem: (CatPictureView) -> Unit,
+    private val clickLongOnItem: (CatPictureView) -> Unit
 ) : ViewHolder(binding.root) {
 
     fun bind(
-        picture: PictureViewModel
+        picture: CatPictureView
     ) {
         setupMainImage(picture)
-        setupFavoriteImage(picture.favorite)
+        //setupFavoriteImage(picture.favorite)
         setupListener(picture)
     }
 
-    fun bindPayload(picture: PictureViewModel) {
-        setupFavoriteImage(picture.favorite)
+    fun bindPayload(picture: CatPictureView) {
+        //setupFavoriteImage(picture.favorite)
         setupListener(picture)
     }
 
     private fun setupMainImage(
-        picture: PictureViewModel
+        picture: CatPictureView
     ) {
-        val drawable = binding.root.context.fromAssertToDrawable(picture.url)
-        with(binding.imageViewMain) {
-            setImageCompound(drawable)
-            textDate = picture.date.formatDate()
-        }
+        binding.imageViewMain.textDate = picture.url
+        loadImage(picture)
     }
 
+    private fun loadImage(picture: CatPictureView) {
+        Glide.with(binding.root.context)
+            .load(picture.url)
+            .placeholder(R.drawable.image_loading_placeholder)
+            .error(R.drawable.image_error_placeholder)
+            .into(binding.imageViewMain.getImageCompound())
+    }
 
-    private fun setupListener(picture: PictureViewModel) {
+    private fun setupListener(picture: CatPictureView) {
         with(binding.imageViewMain) {
             setOnClickListener { clickOnItem.invoke(picture) }
             setOnLongClickListener {
@@ -53,6 +57,4 @@ class ViewHolderPicture(
             binding.imageViewFavorite.setImageResource(android.R.drawable.btn_star_big_off)
         }
     }
-
-
 }

@@ -1,25 +1,22 @@
 package com.alexleru.showpitcture.presentation.view
 
 import androidx.recyclerview.widget.DiffUtil
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
+import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
 
-class PictureDiffCallback : DiffUtil.ItemCallback<ItemDataViewModel>() {
-    override fun areItemsTheSame(oldItem: ItemDataViewModel, newItem: ItemDataViewModel): Boolean {
-        return oldItem.uuid == newItem.uuid
+class PictureDiffCallback : DiffUtil.ItemCallback<CatPictureView>() {
+    override fun areItemsTheSame(oldItem: CatPictureView, newItem: CatPictureView): Boolean {
+        return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
-        oldItem: ItemDataViewModel,
-        newItem: ItemDataViewModel
+        oldItem: CatPictureView,
+        newItem: CatPictureView
     ): Boolean {
         return oldItem == newItem
     }
 
-    override fun getChangePayload(oldItem: ItemDataViewModel, newItem: ItemDataViewModel): Any? {
-        return if (oldItem is PictureViewModel
-            && newItem is PictureViewModel
-            && oldItem.favorite != newItem.favorite
+    override fun getChangePayload(oldItem: CatPictureView, newItem: CatPictureView): Any? {
+        return if (oldItem.url != newItem.url
         ) {
             true
         } else {

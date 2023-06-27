@@ -11,8 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.FragmentListOfPicturesBinding
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.TextTitleViewModel
+import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
 import com.alexleru.showpitcture.presentation.viewModel.ListOfPicturesViewModel
 
 class ListOfPicturesFragment : Fragment() {
@@ -41,9 +40,10 @@ class ListOfPicturesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModelList.getListOfItems().observe(viewLifecycleOwner) {
+        viewModelList.listOfCatPicture.observe(viewLifecycleOwner) {
             pictureAdapter.submitList(it)
         }
+
         viewModelList.progressPosition.observe(viewLifecycleOwner) {
             binding.customProgressBar.animationProgress(it)
         }
@@ -59,8 +59,8 @@ class ListOfPicturesFragment : Fragment() {
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return when (pictureAdapter.currentList[position]) {
-                        is PictureViewModel -> SPAIN_SIZE_ONE
-                        is TextTitleViewModel -> columnCount
+                        is CatPictureView -> SPAIN_SIZE_ONE
+                        else -> throw RuntimeException("Not found ")
                     }
                 }
             }
@@ -71,7 +71,10 @@ class ListOfPicturesFragment : Fragment() {
                     super.onScrolled(recyclerView, dx, dy)
                     val lastPosition =
                         (layoutManager as GridLayoutManager).findLastVisibleItemPosition()
+                    val firstPosition =
+                        (layoutManager as GridLayoutManager).findFirstVisibleItemPosition()
                     viewModelList.position(
+                        firstPosition,
                         lastPosition,
                         (adapter as PictureAdapter).itemCount
                     )
@@ -88,7 +91,7 @@ class ListOfPicturesFragment : Fragment() {
             COLUMN_SIZE_LANDSCAPE
     }
 
-    private fun clickOnItem(picture: PictureViewModel) {
+    private fun clickOnItem(picture: CatPictureView) {
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(
                 R.id.mainActivity, ItemOfPictureFragment.newInstance(picture)
@@ -97,8 +100,8 @@ class ListOfPicturesFragment : Fragment() {
             .commit()
     }
 
-    private fun clickLongOnItem(picture: PictureViewModel) {
-        viewModelList.setFavoriteOfPicture(picture)
+    private fun clickLongOnItem(picture: CatPictureView) {
+        //viewModelList.setFavoriteOfPicture(picture)
     }
 
     override fun onDestroyView() {

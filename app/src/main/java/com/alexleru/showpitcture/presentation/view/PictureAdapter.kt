@@ -6,17 +6,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpitcture.R
 import com.alexleru.showpitcture.databinding.ItemPictureLayoutBinding
-import com.alexleru.showpitcture.databinding.ItemTextLayoutBinding
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.TextTitleViewModel
+import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
 
 
 class PictureAdapter(
-    private val clickOnItem: ((PictureViewModel) -> Unit),
-    private val clickLongOnItem: ((PictureViewModel) -> Unit)
+    private val clickOnItem: ((CatPictureView) -> Unit),
+    private val clickLongOnItem: ((CatPictureView) -> Unit)
 ) :
-    ListAdapter<ItemDataViewModel, RecyclerView.ViewHolder>(PictureDiffCallback()) {
+    ListAdapter<CatPictureView, RecyclerView.ViewHolder>(PictureDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -27,13 +24,6 @@ class PictureAdapter(
                 ViewHolderPicture(bind, clickOnItem, clickLongOnItem)
             }
 
-            TEXT_VIEW_TYPE -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_text_layout, parent, false)
-                val bind = ItemTextLayoutBinding.bind(view)
-                ViewHolderText(bind)
-            }
-
             else -> throw RuntimeException("layout $viewType viewType no exists")
         }
     }
@@ -41,8 +31,7 @@ class PictureAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         when (holder) {
-            is ViewHolderPicture -> holder.bind(item as PictureViewModel)
-            is ViewHolderText -> holder.bind(item as TextTitleViewModel)
+            is ViewHolderPicture -> holder.bind(item)
         }
     }
 
@@ -56,21 +45,20 @@ class PictureAdapter(
             super.onBindViewHolder(holder, position, payloads)
         } else {
             if (payloads[0] == true && holder is ViewHolderPicture) {
-                holder.bindPayload((item as PictureViewModel))
+                holder.bindPayload(item)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is TextTitleViewModel -> TEXT_VIEW_TYPE
-            is PictureViewModel -> PICTURE_VIEW_TYPE
+            is CatPictureView -> PICTURE_VIEW_TYPE
+            else -> throw RuntimeException("Not Found ViewType")
         }
     }
 
     companion object {
         const val PICTURE_VIEW_TYPE = 100
-        const val TEXT_VIEW_TYPE = 101
     }
 
 }

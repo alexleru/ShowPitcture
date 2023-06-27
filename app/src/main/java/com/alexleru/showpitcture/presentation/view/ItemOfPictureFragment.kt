@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.alexleru.showpitcture.databinding.FragmentItemOfPictureBinding
-import com.alexleru.showpitcture.formatDate
-import com.alexleru.showpitcture.fromAssertToDrawable
-import com.alexleru.showpitcture.presentation.view.entity.ItemDataViewModel.PictureViewModel
+import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
+import com.bumptech.glide.Glide
 
 class ItemOfPictureFragment : Fragment() {
 
@@ -18,7 +17,7 @@ class ItemOfPictureFragment : Fragment() {
     private val binding
         get() = _binding ?: throw RuntimeException("FragmentItemOfPictureBinding == null")
 
-    private lateinit var picture: PictureViewModel
+    private lateinit var picture: CatPictureView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,19 +46,24 @@ class ItemOfPictureFragment : Fragment() {
     }
 
     private fun setupImage() {
-        val drawable = requireContext().fromAssertToDrawable(picture.url)
-        binding.imageViewMain.setImageCompound(drawable)
-        binding.imageViewMain.textDate = picture.date.formatDate()
+        loadImage(picture)
+        binding.imageViewMain.textDate = picture.url
+    }
+
+    private fun loadImage(picture: CatPictureView) {
+        Glide.with(binding.root.context)
+            .load(picture.url)
+            .into(binding.imageViewMain.getImageCompound())
     }
 
     private fun parseArgs() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getParcelable(ARG_PICTURE, PictureViewModel::class.java)?.let {
+            requireArguments().getParcelable(ARG_PICTURE, CatPictureView::class.java)?.let {
                 picture = it
             }
         } else {
             @Suppress("DEPRECATION")
-            requireArguments().getParcelable<PictureViewModel>(ARG_PICTURE)?.let {
+            requireArguments().getParcelable<CatPictureView>(ARG_PICTURE)?.let {
                 picture = it
             }
         }
@@ -77,7 +81,7 @@ class ItemOfPictureFragment : Fragment() {
     companion object {
         private const val ARG_PICTURE = "PICTURE"
 
-        fun newInstance(picture: PictureViewModel) = ItemOfPictureFragment().apply {
+        fun newInstance(picture: CatPictureView) = ItemOfPictureFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(ARG_PICTURE, picture)
             }
