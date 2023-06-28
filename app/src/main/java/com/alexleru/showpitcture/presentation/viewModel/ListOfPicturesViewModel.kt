@@ -14,6 +14,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ListOfPicturesViewModel : ViewModel() {
 
+    // TODO
+    // 1) Сначала public поля (если это LiveData, то можно юзать private совмещать с public),
+    // потом private поля, потом public функции, потом private функции
+    // ---
+    // 2) Давай сделаем 1 LivaData, назовем её viewState, сделаем модель ListOfPicturesViewState()
+    // и занесем туда все значения из лайвдат
+
     private val catPictureViewMapper = CatPictureViewMapper()
 
 
@@ -30,7 +37,6 @@ class ListOfPicturesViewModel : ViewModel() {
         _progressPosition.value = newState
     }
 
-
     val disposables = CompositeDisposable()
     private val catService: CatService by lazy { CatServiceImpl() }
     private var _listOfCatPicture = MutableLiveData<List<CatPictureView>>()
@@ -43,13 +49,16 @@ class ListOfPicturesViewModel : ViewModel() {
 
     private fun getListOfCatPictures() {
         catService.getListOfCatPictures()
-            .map { catPictureViewMapper.mapListCatPictureFromApiResponseToView(it) }
+            .map(catPictureViewMapper::mapListCatPictureFromApiResponseToView)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->
                 _listOfCatPicture.value = list
             }, { error ->
                 //TODO change on error screen
+                // Давай отображать экран ошибки с кнопкой повтора, если данных нет, если что-то было загружено до этого, то отобразим тост
+                // Events (Deprecated way, but.. :)) ): https://medium.com/androiddevelopers/livedata-with-snackbar-navigation-and-other-events-the-singleliveevent-case-ac2622673150
+                // True way: https://developer.android.com/topic/architecture/ui-layer/events
                 Log.e("ERROR", "ERROR $error")
             }).also(disposables::add)
     }

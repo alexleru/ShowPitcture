@@ -18,6 +18,7 @@ private val DEFAULT_STYLE_ATTR = R.attr.viewStyleCustomProgressBarViewDefault
 class ProgressView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
+    // TODO: Pass style in constructor
     defStyleAttr: Int = 0,
     defStyleRes: Int = 0
 ) : View(
