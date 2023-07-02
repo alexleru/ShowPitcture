@@ -12,5 +12,5 @@ class CatPictureViewMapper {
         )
 
     fun mapListCatPictureFromApiResponseToView(listCatPictureResponse: List<CatPictureResponse>) =
-        listCatPictureResponse.map { mapCatPictureFromApiResponseToView(it) }
+        listCatPictureResponse.map(::mapCatPictureFromApiResponseToView)
 }

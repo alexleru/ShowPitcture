@@ -37,6 +37,7 @@ class ListOfPicturesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView()
         observeViewModel()
+        swipeView()
     }
 
     private fun observeViewModel() {
@@ -98,6 +99,14 @@ class ListOfPicturesFragment : Fragment() {
             )
             .addToBackStack(null)
             .commit()
+    }
+
+    fun swipeView(){
+        binding.swipeRefresh.setOnRefreshListener {
+            //TODO update method
+
+            binding.swipeRefresh.isRefreshing = false
+        }
     }
 
     private fun clickLongOnItem(picture: CatPictureView) {

@@ -13,6 +13,6 @@ interface CatApi {
 
     companion object {
         private const val LIMIT = "limit"
-        private const val LIMIT_VALUE = 10
+        private const val LIMIT_VALUE = 20
     }
 }

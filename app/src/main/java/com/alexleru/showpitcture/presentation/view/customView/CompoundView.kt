@@ -17,12 +17,11 @@ import com.alexleru.showpitcture.databinding.ImageCompoundViewBinding
 
 
 private const val MINIMAL_TEXT_WIDTH_PERCENT_OF_IMAGE_VIEW = 30
-private val DEFAULT_STYLE_ATTR = R.attr.viewStyleCompoundViewDefault
 
 class CompoundView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0,
+    defStyleAttr: Int = R.attr.viewStyleCompoundViewDefault,
     defStyleRes: Int = 0
 ) : ConstraintLayout(
     context, attrs, defStyleAttr, defStyleRes
@@ -46,7 +45,7 @@ class CompoundView @JvmOverloads constructor(
         getContext().withStyledAttributes(
             attrs,
             R.styleable.CompoundView,
-            DEFAULT_STYLE_ATTR,
+            defStyleAttr,
             defStyleRes
         ) {
             textDate = getString(R.styleable.CompoundView_textCompound).orEmpty()

@@ -14,8 +14,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class ListOfPicturesViewModel : ViewModel() {
 
+    private val disposables = CompositeDisposable()
     private val catPictureViewMapper = CatPictureViewMapper()
+    private val catService: CatService by lazy { CatServiceImpl() }
 
+    private var _listOfCatPicture = MutableLiveData<List<CatPictureView>>()
+    val listOfCatPicture: LiveData<List<CatPictureView>>
+        get() = _listOfCatPicture
 
     private val _progressPosition = MutableLiveData<Int>()
     val progressPosition: LiveData<Int>
@@ -30,20 +35,13 @@ class ListOfPicturesViewModel : ViewModel() {
         _progressPosition.value = newState
     }
 
-
-    val disposables = CompositeDisposable()
-    private val catService: CatService by lazy { CatServiceImpl() }
-    private var _listOfCatPicture = MutableLiveData<List<CatPictureView>>()
-    val listOfCatPicture: LiveData<List<CatPictureView>>
-        get() = _listOfCatPicture
-
     init {
         getListOfCatPictures()
     }
 
     private fun getListOfCatPictures() {
         catService.getListOfCatPictures()
-            .map { catPictureViewMapper.mapListCatPictureFromApiResponseToView(it) }
+            .map ( catPictureViewMapper::mapListCatPictureFromApiResponseToView )
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->
