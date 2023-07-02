@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".presentation.view.ItemOfPictureFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="?attr/actionModeCloseDrawable" />
+
+    <com.alexleru.showpictrure.presentation.view.customView.CompoundView
+        android:id="@+id/imageViewMain"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:backgroundTextCompound="@color/md_theme_error"
+        app:textColorCompound="@color/md_theme_errorContainer"
+        app:sizeRelativeToWidthCompound="80"
+        app:textCompound="10-10-2023" />
+
+</FrameLayout>

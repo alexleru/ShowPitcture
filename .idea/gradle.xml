@@ -11,6 +11,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/common/uikit" />
+            <option value="$PROJECT_DIR$/features" />
+            <option value="$PROJECT_DIR$/features/data" />
+            <option value="$PROJECT_DIR$/features/domain" />
+            <option value="$PROJECT_DIR$/features/presentation" />
           </set>
         </option>
       </GradleProjectSettings>

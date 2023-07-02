@@ -14,3 +14,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "ShowPitcture"
 include ':app'
+include ':common:uikit'
+include ':features:data'
+include ':features:domain'
+include ':features:presentation'

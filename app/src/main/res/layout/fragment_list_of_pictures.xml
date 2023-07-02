@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.view.ListOfPicturesFragment">
+    tools:context="com.alexleru.showpictrure.presentation.view.ListOfPicturesFragment">
 
-    <com.alexleru.showpitcture.presentation.view.customView.ProgressView
+    <com.alexleru.showpictrure.presentation.view.customView.ProgressView
         android:id="@+id/customProgressBar"
         android:layout_width="match_parent"
         android:layout_height="10dp"
