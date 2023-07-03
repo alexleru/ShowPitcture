@@ -5,9 +5,7 @@ import com.alexleru.showpicture.data.mapper.CatPictureMapper
 import com.alexleru.showpicture.domain.CatRepository
 
 class CatRepositoryImpl(
-    private val catApi: CatApi = CatRetrofitBuilder.buildRetrofit().create(
-        CatApi::class.java
-    )
+    private val catApi: CatApi
 ) : CatRepository {
 
     private val catPictureMapper = CatPictureMapper()

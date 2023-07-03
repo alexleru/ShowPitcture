@@ -5,20 +5,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.alexleru.showpictrure.presentation.view.mapper.CatPictureViewMapper
-import com.alexleru.showpicture.data.CatRepositoryImpl
-import com.alexleru.showpicture.domain.CatRepository
-import com.alexleru.showpicture.domain.usecases.GetListOfCatPictureUseCaseImpl
+import com.alexleru.showpicture.domain.usecases.GetListOfCatPictureUseCase
 import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-class ListOfPicturesViewModel : ViewModel() {
+class ListOfPicturesViewModel(private val getListOfCatPictureUseCase: GetListOfCatPictureUseCase) :
+    ViewModel() {
 
     private val disposables = CompositeDisposable()
     private val catPictureViewMapper = CatPictureViewMapper()
-    private val catRepository: CatRepository by lazy { CatRepositoryImpl() }
-    private val getListOfCatPictureUseCase by lazy { GetListOfCatPictureUseCaseImpl(catRepository) }
+    //private val catRepository: CatRepository by lazy { CatRepositoryImpl() }
+    //private val getListOfCatPictureUseCase by lazy { GetListOfCatPictureUseCaseImpl(catRepository) }
 
     private var _listOfCatPicture = MutableLiveData<List<CatPictureView>>()
     val listOfCatPicture: LiveData<List<CatPictureView>>
@@ -43,7 +42,7 @@ class ListOfPicturesViewModel : ViewModel() {
 
     private fun getListOfCatPictures() {
         getListOfCatPictureUseCase.invoke()
-            .map ( catPictureViewMapper::mapListCatPictureFromApiResponseToView )
+            .map(catPictureViewMapper::mapListCatPictureFromApiResponseToView)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ list ->

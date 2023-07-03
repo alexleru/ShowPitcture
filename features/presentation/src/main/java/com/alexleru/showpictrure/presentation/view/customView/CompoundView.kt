@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.annotation.ColorRes
@@ -77,9 +76,6 @@ class CompoundView @JvmOverloads constructor(
     }
 
     private fun calculateSizeTextView() {
-        Log.d("imageViewCompound+++", bind.imageViewCompound.width.toString())
-        Log.d("textViewCompound_OLD_WIDTH+++", bind.textViewCompound.width.toString())
-        Log.d("sizeRelativeToWidthCompound+++", sizeRelativeToWidthCompound.toString())
         val widthOfImageView = bind.imageViewCompound.width
         //TODO при использовании в recycleview не присваиваются какие либо значения.
         // В данном случае textViewCompound.width после присваивания, все равно оставляет прежнее значение
@@ -90,14 +86,8 @@ class CompoundView @JvmOverloads constructor(
             ) {
                 widthOfImageView * MINIMAL_TEXT_WIDTH_PERCENT_OF_IMAGE_VIEW / 100
             } else {
-                Log.d(
-                    "->>+++",
-                    (widthOfImageView * sizeRelativeToWidthCompound / 100).toString()
-                )
                 widthOfImageView * sizeRelativeToWidthCompound / 100
             }
-        Log.d("imageViewCompoundF+++", bind.imageViewCompound.width.toString())
-        Log.d("textViewCompound_NEW_WIDTH+++", bind.textViewCompound.width.toString())
 
         val size = getFitTextSize(
             bind.textViewCompound.paint,
@@ -105,7 +95,6 @@ class CompoundView @JvmOverloads constructor(
             textDate
         )
         bind.textViewCompound.setTextSize(TypedValue.COMPLEX_UNIT_PX, size)
-        Log.d("getFitTextSize++++", bind.textViewCompound.textSize.toString())
     }
 
 

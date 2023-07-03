@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alexleru.showpictrure.presentation.databinding.FragmentListOfPicturesBinding
 import com.alexleru.showpictrure.presentation.viewModel.ListOfPicturesViewModel
 import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListOfPicturesFragment : Fragment() {
 
@@ -19,9 +19,8 @@ class ListOfPicturesFragment : Fragment() {
     private val binding: FragmentListOfPicturesBinding
         get() = _binding ?: throw RuntimeException("FragmentListOfPicturesBinding =  null")
 
-    private val viewModelList by lazy {
-        ViewModelProvider(this)[ListOfPicturesViewModel::class.java]
-    }
+    private val viewModelList by viewModel<ListOfPicturesViewModel>()
+
     private lateinit var pictureAdapter: PictureAdapter
 
     override fun onCreateView(
