@@ -8,7 +8,7 @@ import com.alexleru.showpictrure.presentation.R
 import com.alexleru.showpictrure.presentation.databinding.ItemPictureLayoutBinding
 import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
 
-
+// TODO: Давай положим его и связанные с ним вещи в пакет recycler
 class PictureAdapter(
     private val clickOnItem: ((CatPictureView) -> Unit),
     private val clickLongOnItem: ((CatPictureView) -> Unit)

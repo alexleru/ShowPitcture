@@ -4,6 +4,7 @@ import com.alexleru.showpicture.data.model.CatPictureResponse
 import com.alexleru.showpicture.domain.entity.CatPicture
 
 class CatPictureMapper {
+    // TODO: Map to domain)
     fun mapperToData(catPictureResponse: CatPictureResponse) =
         CatPicture(
             id = catPictureResponse.id,

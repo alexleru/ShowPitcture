@@ -1,4 +1,5 @@
 package com.alexleru.showpitcture.presentation.view.modelView
+// TODO: Поехали пакеты после перемещения
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

@@ -15,6 +15,8 @@ class ListOfPicturesViewModel(private val getListOfCatPictureUseCase: GetListOfC
     ViewModel() {
 
     private val disposables = CompositeDisposable()
+
+    // TODO: Mapper тоже под DI
     private val catPictureViewMapper = CatPictureViewMapper()
     //private val catRepository: CatRepository by lazy { CatRepositoryImpl() }
     //private val getListOfCatPictureUseCase by lazy { GetListOfCatPictureUseCaseImpl(catRepository) }
