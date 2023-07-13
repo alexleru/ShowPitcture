@@ -1,4 +1,4 @@
-package com.alexleru.showpictrure.presentation.view
+package com.alexleru.showpictrure.presentation.view.fragments
 
 import android.os.Build
 import android.os.Bundle

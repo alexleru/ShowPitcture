@@ -19,7 +19,7 @@
         app:sizeRelativeToWidthCompound="80"
         app:backgroundTextCompound="@color/md_theme_error"
         app:textColorCompound="@color/design_default_color_on_primary"
-        app:textCompound="@string/app_name"
+        app:textCompound="example"
         tools:srcCompat="@tools:sample/avatars"
         />
 

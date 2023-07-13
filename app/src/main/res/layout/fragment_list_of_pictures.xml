@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.alexleru.showpictrure.presentation.view.ListOfPicturesFragment">
+    tools:context="com.alexleru.showpictrure.presentation.view.fragments.ListOfPicturesFragment">
 
     <com.alexleru.showpictrure.presentation.view.customView.ProgressView
         android:id="@+id/customProgressBar"

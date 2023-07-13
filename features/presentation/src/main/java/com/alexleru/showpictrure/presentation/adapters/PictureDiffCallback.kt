@@ -1,4 +1,4 @@
-package com.alexleru.showpictrure.presentation.view
+package com.alexleru.showpictrure.presentation.adapters
 
 import androidx.recyclerview.widget.DiffUtil
 import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView

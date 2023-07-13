@@ -1,4 +1,4 @@
-package com.alexleru.showpictrure.presentation.view
+package com.alexleru.showpictrure.presentation.adapters
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.alexleru.showpictrure.presentation.databinding.ItemPictureLayoutBinding

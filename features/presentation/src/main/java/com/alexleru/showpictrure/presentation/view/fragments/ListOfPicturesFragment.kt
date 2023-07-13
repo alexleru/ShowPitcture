@@ -1,4 +1,4 @@
-package com.alexleru.showpictrure.presentation.view
+package com.alexleru.showpictrure.presentation.view.fragments
 
 import android.content.res.Configuration
 import android.os.Bundle
@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alexleru.showpictrure.presentation.adapters.PictureAdapter
 import com.alexleru.showpictrure.presentation.databinding.FragmentListOfPicturesBinding
+import com.alexleru.showpictrure.presentation.view.modelView.arch.PicturesViewState
 import com.alexleru.showpictrure.presentation.viewModel.ListOfPicturesViewModel
 import com.alexleru.showpitcture.presentation.view.modelView.CatPictureView
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListOfPicturesFragment : Fragment() {
@@ -22,6 +26,8 @@ class ListOfPicturesFragment : Fragment() {
     private val viewModelList by viewModel<ListOfPicturesViewModel>()
 
     private lateinit var pictureAdapter: PictureAdapter
+
+    private val disposable = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,13 +45,22 @@ class ListOfPicturesFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModelList.listOfCatPicture.observe(viewLifecycleOwner) {
-            pictureAdapter.submitList(it)
-        }
+
+        viewModelList.viewStateSubject
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe (::invalidateState )
+            .also ( disposable::add )
 
         viewModelList.progressPosition.observe(viewLifecycleOwner) {
             binding.customProgressBar.animationProgress(it)
         }
+    }
+
+    private fun invalidateState(picturesViewState: PicturesViewState) {
+        with(binding) {
+            swipeRefresh.isRefreshing = picturesViewState.isRefreshing
+        }
+        pictureAdapter.submitList(picturesViewState.catPictureView)
     }
 
     private fun recyclerView() {
@@ -59,7 +74,7 @@ class ListOfPicturesFragment : Fragment() {
                 override fun getSpanSize(position: Int): Int {
                     return when (pictureAdapter.currentList[position]) {
                         is CatPictureView -> SPAIN_SIZE_ONE
-                        else -> throw RuntimeException("Not found ")
+                        else -> throw RuntimeException("Not found View")
                     }
                 }
             }
@@ -114,6 +129,7 @@ class ListOfPicturesFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        disposable.clear()
     }
 
     companion object {
